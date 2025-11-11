@@ -13,7 +13,7 @@ source=(
     "client.yml"
 )
 sha256sums=(
-    'ba3d2d376a279aa6f3eec3a5b2cf560bf4e91a21ebe00669e78c7fe6e37c5d26'
+    '540ee08b9bd7bcc8b9b2a68184c8516522558492978aff486997994a0ddb0065'
     'e36714a16816141c461d39614b19dfa5bb4bd242d21d0793f4b700baee5168fb'
     '1edb61769ad62ce184df6797912724ae8e460953f5929cf4da00a23cb45e64b5'
 )
@@ -22,6 +22,9 @@ package() {
     # Remove Restart and RestartSec from the service file, as the Python script handles retries internally.
     sed -i '/^Restart=/d' "${srcdir}/${pkgname}.service"
     sed -i '/^RestartSec=/d' "${srcdir}/${pkgname}.service"
+
+    sed -i 's/^StandardOutput=journal/StandardOutput=file:\/tmp\/ntfy-bridge.log/' "${srcdir}/${pkgname}.service"
+    sed -i 's/^StandardError=journal/StandardError=file:\/tmp\/ntfy-bridge.log/' "${srcdir}/${pkgname}.service"
 
     install -D -m 755 "${srcdir}/${pkgname}.py" "${pkgdir}/usr/bin/${pkgname}.py"
     install -D -m 644 "${srcdir}/${pkgname}.service" "${pkgdir}/usr/lib/systemd/user/${pkgname}.service"

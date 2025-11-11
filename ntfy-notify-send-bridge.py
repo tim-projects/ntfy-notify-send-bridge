@@ -40,13 +40,19 @@ def load_config():
     """Loads and validates the subscriptions from the client.yml file."""
     global first_run_after_copy
 
+    print(f"DEBUG: load_config() started. Checking if config file exists: {CONFIG_PATH}")
     if not os.path.exists(CONFIG_PATH):
+        print(f"DEBUG: Config file {CONFIG_PATH} not found. Attempting to create/copy.")
         config_dir = os.path.dirname(CONFIG_PATH)
         example_config_path = "/usr/share/examples/ntfy-notify-send-bridge/client.yml.example"
 
         try:
+            print(f"DEBUG: Creating config directory: {config_dir}")
             os.makedirs(config_dir, exist_ok=True)
-            subprocess.run(["cp", example_config_path, CONFIG_PATH], check=True)
+            print(f"DEBUG: Copying example config from {example_config_path} to {CONFIG_PATH}")
+            result = subprocess.run(["cp", example_config_path, CONFIG_PATH], check=True, capture_output=True, text=True)
+            print(f"DEBUG: cp command stdout: {result.stdout}")
+            print(f"DEBUG: cp command stderr: {result.stderr}")
             message = f"ntfy-notify-send-bridge: Example config created at {CONFIG_PATH}. Please edit it to add your ntfy subscriptions and restart the service 'systemctl --user restart ntfy-notify-send-bridge.service'."
             print(message) # This is a one-time event, no cooldown needed
             try:
@@ -57,11 +63,15 @@ def load_config():
         except Exception as e:
             message = f"ntfy-notify-send-bridge: Error creating or copying config file: {e}. Please check permissions and ensure {example_config_path} exists. The service will retry after 5 minutes."
             send_notification_with_timeout("config_create_copy_error", "ntfy-notify-send-bridge", message)
+        print("DEBUG: load_config() returning empty list after config creation/copy attempt.")
         return []
         
     try:
+        print(f"DEBUG: Config file {CONFIG_PATH} found. Attempting to load.")
         with open(CONFIG_PATH, 'r') as f:
-            config = yaml.safe_load(f)            
+            config = yaml.safe_load(f)
+        print(f"DEBUG: Config loaded successfully. Config content (first 100 chars): {str(config)[:100]}")
+            
         # Extract default host or use ntfy.sh
         default_host = config.get('default-host', NTFY_DEFAULT_HOST).rstrip('/')
         
@@ -69,6 +79,11 @@ def load_config():
         for sub in config.get('subscribe', []):
             topic = sub.get('topic')
             command = sub.get('command')
+            
+            # If no command is specified, use a default notify-send command
+            if not command:
+                command = "notify-send \"$NTFY_TOPIC\" \"$NTFY_MESSAGE\""
+
             if topic and command:
                 # Construct the full URL for the JSON stream
                 url = f"{default_host}/{topic}/json"
@@ -80,6 +95,7 @@ def load_config():
                     'password': sub.get('password'),
                     'if_condition': sub.get('if', {})
                 })
+        print(f"DEBUG: Found {len(subscriptions)} subscriptions.")
         if not subscriptions:
             if first_run_after_copy:
                 message = f"ntfy-notify-send-bridge: Please edit {CONFIG_PATH} to add your ntfy subscriptions and restart the service 'systemctl --user restart ntfy-notify-send-bridge.service'. The service will retry after 5 minutes."
@@ -87,16 +103,19 @@ def load_config():
             else:
                 message = f"ntfy-notify-send-bridge: No valid subscriptions found in {CONFIG_PATH}. Please add at least one topic. The service will retry after 5 minutes."
                 send_notification_with_timeout("no_subscriptions", "ntfy-notify-send-bridge", message)
+            print("DEBUG: load_config() returning empty list due to no subscriptions.")
             return []
         
         # If config is loaded successfully, reset all notification cooldowns and first_run_after_copy flag
         for key in last_notification_time:
             last_notification_time[key] = 0
         first_run_after_copy = False
+        print(f"DEBUG: load_config() returning {len(subscriptions)} subscriptions successfully.")
         return subscriptions
     except Exception as e:
         message = f"ntfy-notify-send-bridge: Error loading or parsing config: {e}. Please check {CONFIG_PATH}. The service will retry after 5 minutes."
         send_notification_with_timeout("config_parse_error", "ntfy-notify-send-bridge", message)
+        print(f"DEBUG: load_config() returning empty list due to parse error: {e}")
         return []
 
 def run_command(command_template, data):
