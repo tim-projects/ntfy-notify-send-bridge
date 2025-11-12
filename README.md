@@ -40,11 +40,11 @@ makepkg -si
 
 ## Configuration
 
-1.  An example configuration file `client.yml.example` is installed to `/usr/share/doc/ntfy-notify-send-bridge/`.
+1.  An example configuration file `client.yml.example` is installed to `/usr/share/examples/ntfy-notify-send-bridge/`.
 2.  Copy this example to your ntfy configuration directory:
     ```bash
 mkdir -p ~/.config/ntfy
-cp /usr/share/doc/ntfy-notify-send-bridge/client.yml.example ~/.config/ntfy/client.yml
+cp /usr/share/examples/ntfy-notify-send-bridge/client.yml.example ~/.config/ntfy/client.yml
     ```
 3.  Edit `~/.config/ntfy/client.yml` to add your ntfy subscriptions. Here's an example:
 
@@ -94,4 +94,4 @@ systemctl --user stop ntfy-notify-send-bridge.service
 
 ## License
 
-This project is licensed under the MIT License. See the `LICENSE` file for details. # TODO: Create a LICENSE file
+This project is licensed under the MIT License. See the `LICENSE` file for details.
