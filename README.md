@@ -14,24 +14,24 @@ This project provides a Python script and a systemd user service to listen for n
 
 ## Installation (AUR)
 
-This package is available in the Arch User Repository (AUR) as `ntfy-notify-send-bridge`.
+This package is available in the Arch User Repository (AUR) as `ntfy-notify-send-bridge-git`.
 
 ### Using an AUR Helper (Recommended)
 
 If you have an AUR helper like `yay` or `paru`, you can install it with:
 
 ```bash
-yay -S ntfy-notify-send-bridge
+yay -S ntfy-notify-send-bridge-git
 # or
-paru -S ntfy-notify-send-bridge
+paru -S ntfy-notify-send-bridge-git
 ```
 
 ### Manual Installation
 
 1.  Clone the AUR package:
     ```bash
-git clone https://aur.archlinux.org/ntfy-notify-send-bridge.git
-cd ntfy-notify-send-bridge
+git clone https://aur.archlinux.org/ntfy-notify-send-bridge-git.git
+cd ntfy-notify-send-bridge-git
     ```
 2.  Build and install:
     ```bash
@@ -40,11 +40,11 @@ makepkg -si
 
 ## Configuration
 
-1.  An example configuration file `client.yml.example` is installed to `/usr/share/examples/ntfy-notify-send-bridge/`.
+1. An example configuration file `client.yml.example` is installed to `/usr/share/examples/ntfy-notify-send-bridge-git/`.
 2.  Copy this example to your ntfy configuration directory:
     ```bash
 mkdir -p ~/.config/ntfy
-cp /usr/share/examples/ntfy-notify-send-bridge/client.yml.example ~/.config/ntfy/client.yml
+cp /usr/share/examples/ntfy-notify-send-bridge-git/client.yml.example ~/.config/ntfy/client.yml
     ```
 3.  Edit `~/.config/ntfy/client.yml` to add your ntfy subscriptions. Here's an example:
 

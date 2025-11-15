@@ -1,6 +1,6 @@
-pkgbase = ntfy-notify-send-bridge
+pkgbase = ntfy-notify-send-bridge-git
 	pkgdesc = Bridge messages from ntfy to notify-send using a systemd user service.
-	pkgver = 0.1.0
+	pkgver = 0
 	pkgrel = 1
 	url = https://github.com/tim-projects/ntfy-notify-send-bridge
 	arch = any
@@ -10,6 +10,8 @@ pkgbase = ntfy-notify-send-bridge
 	depends = python-pyyaml
 	depends = python-aiohttp
 	depends = libnotify
+	provides = ntfy-notify-send-bridge
+	conflicts = ntfy-notify-send-bridge
 	source = ntfy-notify-send-bridge.py
 	source = ntfy-notify-send-bridge.service
 	source = client.yml
@@ -17,4 +19,4 @@ pkgbase = ntfy-notify-send-bridge
 	sha256sums = e36714a16816141c461d39614b19dfa5bb4bd242d21d0793f4b700baee5168fb
 	sha256sums = 1edb61769ad62ce184df6797912724ae8e460953f5929cf4da00a23cb45e64b5
 
-pkgname = ntfy-notify-send-bridge
+pkgname = ntfy-notify-send-bridge-git
