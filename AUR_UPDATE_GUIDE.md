@@ -61,6 +61,13 @@ This guide outlines the process for submitting updates to the `ntfy-notify-send-
     git checkout dev
     ```
 
+## Gitignore Strategy
+
+To manage files tracked on different branches:
+
+*   **`dev` branch:** The `.gitignore` on `dev` is less restrictive, allowing `.md` files (like this guide) and other development-related files to be tracked.
+*   **`master` branch:** The `.gitignore` on `master` is a whitelist, ignoring everything by default and only explicitly allowing essential files for AUR submission (`PKGBUILD`, `.SRCINFO`, `README.md`, `LICENSE`, `client.yml`, `ntfy-notify-send-bridge.py`, `ntfy-notify-send-bridge.service`). This ensures only necessary files are pushed to the AUR.
+
 ## Example Scenario: Updating the Python Script
 
 Let's say you've made changes to `ntfy-notify-send-bridge.py` and committed them on `dev`.
@@ -81,5 +88,3 @@ git push aur master    # Push to AUR
 # Back to dev
 git checkout dev
 ```
-
-This workflow ensures that your AUR package is always up-to-date with your `master` branch, and your development continues smoothly on `dev`.
