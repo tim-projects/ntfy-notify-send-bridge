@@ -1,0 +1,14 @@
+# Ignore everything by default
+*
+
+# Un-ignore directories needed for specific files
+!/
+
+# Un-ignore essential files for AUR submission
+!/.SRCINFO
+!/PKGBUILD
+!/README.md
+!/LICENSE
+!/client.yml
+!/ntfy-notify-send-bridge.py
+!/ntfy-notify-send-bridge.service
