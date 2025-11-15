@@ -42,12 +42,12 @@ def load_config():
 
     if not os.path.exists(CONFIG_PATH):
         config_dir = os.path.dirname(CONFIG_PATH)
-        example_config_path = "/usr/share/examples/ntfy-notify-send-bridge/client.yml.example"
+        example_config_path = "/usr/share/examples/ntfy-notify-send-bridge-git/client.yml.example"
 
         try:
             os.makedirs(config_dir, exist_ok=True)
             subprocess.run(["cp", example_config_path, CONFIG_PATH], check=True)
-            message = f"ntfy-notify-send-bridge: Example config created at {CONFIG_PATH}. Please edit it to add your ntfy subscriptions and restart the service 'systemctl --user restart ntfy-notify-send-bridge.service'."
+            message = f"ntfy-notify-send-bridge-git: Example config created at {CONFIG_PATH}. Please edit it to add your ntfy subscriptions and restart the service 'systemctl --user restart ntfy-notify-send-bridge.service'."
             print(message) # This is a one-time event, no cooldown needed
             try:
                 subprocess.run(["notify-send", "-u", "critical", "ntfy-notify-send-bridge", message], check=True)
@@ -55,7 +55,7 @@ def load_config():
                 print(f"Warning: Could not send desktop notification: {e}")
             first_run_after_copy = True # Set flag as config was just created
         except Exception as e:
-            message = f"ntfy-notify-send-bridge: Error creating or copying config file: {e}. Please check permissions and ensure {example_config_path} exists. The service will retry after 5 minutes."
+            message = f"ntfy-notify-send-bridge-git: Error creating or copying config file: {e}. Please check permissions and ensure {example_config_path} exists. The service will retry after 5 minutes."
             send_notification_with_timeout("config_create_copy_error", "ntfy-notify-send-bridge", message)
         return []
         
@@ -88,10 +88,10 @@ def load_config():
                 })
         if not subscriptions:
             if first_run_after_copy:
-                message = f"ntfy-notify-send-bridge: Please edit {CONFIG_PATH} to add your ntfy subscriptions and restart the service 'systemctl --user restart ntfy-notify-send-bridge.service'. The service will retry after 5 minutes."
+                message = f"ntfy-notify-send-bridge-git: Please edit {CONFIG_PATH} to add your ntfy subscriptions and restart the service 'systemctl --user restart ntfy-notify-send-bridge.service'. The service will retry after 5 minutes."
                 send_notification_with_timeout("first_run_no_subscriptions", "ntfy-notify-send-bridge", message)
             else:
-                message = f"ntfy-notify-send-bridge: No valid subscriptions found in {CONFIG_PATH}. Please add at least one topic. The service will retry after 5 minutes."
+                message = f"ntfy-notify-send-bridge-git: No valid subscriptions found in {CONFIG_PATH}. Please add at least one topic. The service will retry after 5 minutes."
                 send_notification_with_timeout("no_subscriptions", "ntfy-notify-send-bridge", message)
             return []
         
@@ -101,7 +101,7 @@ def load_config():
         first_run_after_copy = False
         return subscriptions
     except Exception as e:
-        message = f"ntfy-notify-send-bridge: Error loading or parsing config: {e}. Please check {CONFIG_PATH}. The service will retry after 5 minutes."
+        message = f"ntfy-notify-send-bridge-git: Error loading or parsing config: {e}. Please check {CONFIG_PATH}. The service will retry after 5 minutes."
         send_notification_with_timeout("config_parse_error", "ntfy-notify-send-bridge", message)
         return []
 
@@ -204,5 +204,5 @@ if __name__ == "__main__":
             asyncio.run(subscribe_and_listen(subs))
         else:
             # If no subscriptions (due to config error), wait for cooldown before retrying
-            print(f"ntfy-notify-send-bridge: Waiting for {NOTIFICATION_COOLDOWN // 60} minutes before retrying configuration load.")
+            print(f"ntfy-notify-send-bridge-git: Waiting for {NOTIFICATION_COOLDOWN // 60} minutes before retrying configuration load.")
             time.sleep(NOTIFICATION_COOLDOWN)

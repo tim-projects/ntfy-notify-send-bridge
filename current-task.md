@@ -29,9 +29,8 @@ This is a placeholder for current task notes.
     *   Encountered issues with `git checkout dev` due to an untracked `.gitignore` in the working directory on `main`. This was resolved by removing the untracked `.gitignore` before switching branches.
 *   **AUR SSH Authentication Failure:**
     *   Encountered "Host key verification failed" during `git push aur main`.
-    *   **Finding:** This is typically due to the public SSH key not being correctly registered on the AUR website or the SSH agent not having the private key loaded.
-    *   **Mitigation (User Action Required):** User was instructed to manually verify their public SSH key on the AUR website and ensure their SSH agent is running and has the private key loaded (using `eval "$(ssh-agent -s)"` and `ssh-add ~/.ssh/id_rsa_arch_aur_contributor` in their terminal, and configuring `~/.bashrc` for persistence).
+    *   **Finding:** The public SSH key's email address was observed to be truncated upon saving on the AUR website. This suggests the key material itself might be corrupted or not fully saved, leading to authentication failures.
+    *   **Mitigation (User Action Required):** User was instructed to manually verify their public SSH key on the AUR website and ensure their SSH agent is running and has the private key loaded (using `eval "$(ssh-agent -s)"` and `ssh-add ~/.ssh/id_rsa_arch_aur_contributor` in their terminal, and configuring `~/.bashrc` for persistence). Despite re-adding the key, the truncation persisted, and push attempts continued to fail.
 
 **Next Steps:**
-*   User needs to confirm SSH agent and key setup.
-*   Retry `git push aur main` once SSH authentication is confirmed to be working.
+*   **User Action Required:** Contact AUR support regarding the public key truncation issue or consider generating a new SSH key pair and re-attempting the process.
