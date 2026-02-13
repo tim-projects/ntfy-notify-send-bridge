@@ -15,7 +15,9 @@ source=(
     "ntfy-notify-send-bridge.service"
     "client.yml"
 )
-sha256sums=('SKIP')
+sha256sums=('af5b803792f4d0463187eea7f6aaa7446cfd0dbafc662ba8aa25839d3abdcef4'
+            'e36714a16816141c461d39614b19dfa5bb4bd242d21d0793f4b700baee5168fb'
+            '1edb61769ad62ce184df6797912724ae8e460953f5929cf4da00a23cb45e64b5')
 
 pkgver() {
   cd "${srcdir}"
